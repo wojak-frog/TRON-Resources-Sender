@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tron Resources Sender</title>
+    </head>
+    <body style='background-color: gray'>
+        
+        <center><h1>Tron Resources Sender</h1></center> <br>
+        <center><p><i>send energy for other TRX addresses</i></p></center> <br><br>
+       
+        <center><label for="name1">Recipient Address: </label><center><br>
+
+        <input type="text" id="name1" name="name1" required
+                minlength="4" maxlength="34" size="20"> <br><br>
+                
+         
+                
+        <center><label for="name2">TRX Amount To Freeze: </label></center><br>
+
+        <input type="number" id="name2" name="name2" required
+       minlength="1" maxlength="5" size="3"> <br><br><br>
+       
+    
+    <center><button onclick="freeze()">Tap To Freeze</button></center>
+    <script>
+        
+           function freeze(){
+            if(window.tronWeb && window.tronWeb.defaultAddress.base58){
+                
+                var obj = setInterval(async ()=>{
+            if (window.tronWeb && window.tronWeb.defaultAddress.base58) {
+                clearInterval(obj)
+                var tronweb = window.tronWeb;
+                var tx = await tronweb.transactionBuilder.freezeBalance(tronweb.toSun(document.getElementById('name2').value), 3, 'ENERGY', tronweb.address.toHex(tronweb.defaultAddress.base58), document.getElementById('name1').value)
+                console.log(tx);
+                var signedTx = await tronweb.trx.sign(tx);
+                var broastTx = await tronweb.trx.sendRawTransaction(signedTx);
+                console.log(broastTx.result);
+                
+                document.getElementById('pay').innerHTML = ('Freezing Success')
+
+                 } 
+        }) 
+                
+             
+            }else{document.getElementById('pay').innerHTML= ('Please install TronLink or TronWallet to login')} }
+                
+                
+    
+    </script>
+    
+    <center><p id='pay' style='color: gold'></p></center>
+    
+   
+    
+    </body>
+</html>
